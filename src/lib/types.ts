@@ -15,4 +15,6 @@ export type Product = {
   imageHint?: string;
   featured?: boolean;
   rating?: number; // Optional, 1-5
+  isNewArrival?: boolean; // Added for new arrivals
 };
+

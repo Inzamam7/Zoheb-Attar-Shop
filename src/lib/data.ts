@@ -19,9 +19,10 @@ export const products: Product[] = [
     price: 20.00,
     categorySlug: 'signature-blends',
     imageUrl: 'https://images.unsplash.com/photo-1458538977777-0549b2370168?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJmdW1lJTIwYWs0N3xlbnwwfHx8fDE3NDk1MzY2NTd8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    imageHint: 'perfume ak47',
+    imageHint: 'attar bottles',
     featured: true,
     rating: 5,
+    isNewArrival: true,
   },
   {
     id: 'p2',
@@ -31,9 +32,10 @@ export const products: Product[] = [
     price: 21.00,
     categorySlug: 'signature-blends',
     imageUrl: '/images/al-khalij.jpg',
-    imageHint: 'perfume box',
+    imageHint: 'perfume al khalij',
     featured: true,
     rating: 4,
+    isNewArrival: true,
   },
   {
     id: 'p3',
@@ -46,6 +48,7 @@ export const products: Product[] = [
     imageHint: 'perfume bottle',
     featured: true,
     rating: 5,
+    isNewArrival: false,
   },
   {
     id: 'p4',
@@ -58,6 +61,7 @@ export const products: Product[] = [
     imageHint: 'perfume bottle',
     featured: true,
     rating: 4,
+    isNewArrival: false,
   },
   {
     id: 'p5',
@@ -70,6 +74,7 @@ export const products: Product[] = [
     imageHint: 'perfume bottle',
     featured: false,
     rating: 5,
+    isNewArrival: true,
   },
   {
     id: 'p6',
@@ -82,6 +87,7 @@ export const products: Product[] = [
     imageHint: 'perfume bottle',
     featured: false,
     rating: 4,
+    isNewArrival: false,
   },
   {
     id: 'p7',
@@ -94,6 +100,7 @@ export const products: Product[] = [
     imageHint: 'perfume bottle',
     featured: false,
     rating: 5,
+    isNewArrival: true,
   },
   {
     id: 'p8',
@@ -281,8 +288,11 @@ export const getProductById = (id: string): Product | undefined => products.find
 
 export const getProductsByCategory = (slug: string): Product[] => products.filter(p => p.categorySlug === slug);
 
-export const getFeaturedProducts = (): Product[] => products.filter(p => p.featured);
+export const getFeaturedProducts = (): Product[] => products.filter(p => p.featured).sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
+export const getNewArrivals = (): Product[] => products.filter(p => p.isNewArrival).sort((a,b) => a.name.localeCompare(b.name)); // Example sort, can be by date if available
 
     
 
     
+

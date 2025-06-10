@@ -49,6 +49,8 @@ export default function ProductsPage() {
       tempProducts.sort((a, b) => b.name.localeCompare(a.name));
     } else if (sortOption === 'featured') {
       tempProducts.sort((a,b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || a.name.localeCompare(b.name));
+    } else if (sortOption === 'new-arrivals') {
+      tempProducts.sort((a,b) => (b.isNewArrival ? 1 : 0) - (a.isNewArrival ? 1 : 0) || a.name.localeCompare(b.name));
     }
 
 
@@ -88,6 +90,7 @@ export default function ProductsPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="featured">Featured</SelectItem>
+            <SelectItem value="new-arrivals">New Arrivals</SelectItem>
             <SelectItem value="price-asc">Price: Low to High</SelectItem>
             <SelectItem value="price-desc">Price: High to Low</SelectItem>
             <SelectItem value="name-asc">Name: A to Z</SelectItem>
