@@ -10,7 +10,7 @@ import { Heart, Star } from 'lucide-react';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
 import { WhatsappIcon } from '@/components/icons/WhatsappIcon';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react'; // Import memo
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from '@/components/ui/label';
 
@@ -20,25 +20,23 @@ interface ProductCardProps {
 
 const WHATSAPP_NUMBER = "917397865199";
 
-export default function ProductCard({ product }: ProductCardProps) {
+const ProductCardComponent = ({ product }: ProductCardProps) => {
   const { addToWishlist, removeFromWishlist, isWishlisted } = useWishlist();
   const { toast } = useToast();
 
-  const [selectedPriceInfo, setSelectedPriceInfo] = useState<ProductPrice>(() => 
-    product.prices && product.prices.length > 0 
-      ? product.prices[0] 
+  const [selectedPriceInfo, setSelectedPriceInfo] = useState<ProductPrice>(() =>
+    product.prices && product.prices.length > 0
+      ? product.prices[0]
       : { size: "N/A", price: 0 }
   );
 
-  // Effect to update selectedPriceInfo when the product prop changes.
-  // This is crucial for components reused in lists/marquees where the product prop might change.
   useEffect(() => {
     setSelectedPriceInfo(
       product.prices && product.prices.length > 0
         ? product.prices[0]
         : { size: "N/A", price: 0 }
     );
-  }, [product]); // Only depend on the product prop.
+  }, [product]);
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -89,7 +87,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <span className="ml-1 text-xs text-muted-foreground">({product.rating})</span>
             </div>
           )}
-          
+
           <div className="mt-2 space-y-1">
             {product.prices && product.prices.length > 0 && (
               <div>
@@ -109,7 +107,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               </div>
             )}
             <p className="text-lg font-semibold text-primary pt-1">
-              ${selectedPriceInfo.price.toFixed(2)} 
+              ${selectedPriceInfo.price.toFixed(2)}
               {selectedPriceInfo.size !== "N/A" && <span className="text-sm font-normal text-muted-foreground"> ({selectedPriceInfo.size})</span>}
             </p>
           </div>
@@ -135,3 +133,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     </Card>
   );
 }
+// Memoize the component
+const ProductCard = memo(ProductCardComponent);
+ProductCard.displayName = 'ProductCard'; // Optional: for better debugging
+
+export default ProductCard;
