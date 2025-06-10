@@ -1,5 +1,5 @@
 
-"use client"; // Required for useState and useEffect
+"use client"; 
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,7 @@ import ProductCard from '@/components/products/ProductCard';
 import { getFeaturedProducts, getNewArrivals, getHighlightedNewAttars } from '@/lib/data';
 import Image from 'next/image';
 import { PackagePlus, Sparkles } from 'lucide-react';
-import { useState, useRef } from 'react'; // Added useState, useRef
+import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function HomePage() {
@@ -16,7 +16,9 @@ export default function HomePage() {
   const highlightedNewAttars = getHighlightedNewAttars();
 
   const [isMarqueePaused, setIsMarqueePaused] = useState(false);
+  const [centeredItemKey, setCenteredItemKey] = useState<string | null>(null);
   const marqueeContentRef = useRef<HTMLDivElement>(null);
+  const marqueeContainerRef = useRef<HTMLDivElement>(null); // Ref for the marquee container
 
   // Duplicate attars for seamless scrolling, only if there are items
   const marqueeAttarsDuplicated = highlightedNewAttars.length > 0 ? [...highlightedNewAttars, ...highlightedNewAttars] : [];
@@ -25,6 +27,105 @@ export default function HomePage() {
     setIsMarqueePaused(true);
     // Navigation will proceed via the Link component within ProductCard
   };
+
+  useEffect(() => {
+    const marqueeNode = marqueeContainerRef.current;
+    const contentNode = marqueeContentRef.current;
+
+    if (!marqueeNode || !contentNode || marqueeAttarsDuplicated.length === 0) {
+      // If marquee is paused and nothing is centered, try to find a center once.
+      if (isMarqueePaused && !centeredItemKey && contentNode && marqueeNode) {
+         // Manually trigger a check if paused and no item is centered.
+        const itemsForManualCheck = Array.from(contentNode.children) as HTMLElement[];
+        let closestItemManual: HTMLElement | null = null;
+        let minDistanceManual = Infinity;
+        const marqueeContainerRectManual = marqueeNode.getBoundingClientRect();
+        const containerCenterManual = marqueeContainerRectManual.left + marqueeContainerRectManual.width / 2;
+
+        itemsForManualCheck.forEach(itemEl => {
+            const itemRect = itemEl.getBoundingClientRect();
+            // Ensure item is somewhat visible in the container
+            if (itemRect.right > marqueeContainerRectManual.left && itemRect.left < marqueeContainerRectManual.right) {
+                const itemCenter = itemRect.left + itemRect.width / 2;
+                const distance = Math.abs(containerCenterManual - itemCenter);
+                if (distance < minDistanceManual) {
+                    minDistanceManual = distance;
+                    closestItemManual = itemEl;
+                }
+            }
+        });
+        if (closestItemManual) {
+            setCenteredItemKey(closestItemManual.dataset.itemKey || null);
+        }
+
+      }
+      return;
+    }
+
+
+    const items = Array.from(contentNode.children) as HTMLElement[];
+    if (items.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isMarqueePaused && centeredItemKey) return; // Don't update if paused and an item is already centered
+
+        let closestItem: HTMLElement | null = null;
+        let minDistance = Infinity;
+
+        const marqueeContainerRect = marqueeNode.getBoundingClientRect();
+        // Ensure rect has valid width to avoid division by zero or NaN issues
+        if (marqueeContainerRect.width === 0) return;
+        const containerCenter = marqueeContainerRect.left + marqueeContainerRect.width / 2;
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const itemRect = entry.target.getBoundingClientRect();
+            const itemCenter = itemRect.left + itemRect.width / 2;
+            const distance = Math.abs(containerCenter - itemCenter);
+
+            // Prioritize items that are more fully visible and closer to the center
+            // Adjust intersectionRatio threshold as needed
+            if (distance < minDistance && entry.intersectionRatio > 0.1) {
+              minDistance = distance;
+              closestItem = entry.target as HTMLElement;
+            }
+          }
+        });
+        
+        if (closestItem) {
+          setCenteredItemKey(closestItem.dataset.itemKey || null);
+        } else {
+           // If no item is clearly "centered" but some are visible,
+           // we might want to clear the centeredItemKey or pick the most visible one.
+           // For now, if nothing is actively centered, we can clear it.
+           const anyIntersecting = entries.some(e => e.isIntersecting && e.intersectionRatio > 0.05);
+           if (!anyIntersecting) {
+             setCenteredItemKey(null);
+           }
+        }
+      },
+      {
+        root: marqueeNode,
+        threshold: Array.from({ length: 21 }, (_, i) => i * 0.05), // Check every 5%
+      }
+    );
+
+    items.forEach((item) => {
+      if (item) observer.observe(item);
+    });
+
+    return () => {
+      items.forEach((item) => {
+        if (item) observer.unobserve(item);
+      });
+      observer.disconnect();
+    };
+  // Re-run observer setup if the list of attars changes.
+  // isMarqueePaused is included so that if we un-pause, the observer can re-evaluate.
+  // centeredItemKey is added to help re-evaluate if marquee is paused and no item is centered.
+  }, [highlightedNewAttars, isMarqueePaused, centeredItemKey, marqueeAttarsDuplicated.length]);
+
 
   return (
     <div className="space-y-16">
@@ -53,20 +154,37 @@ export default function HomePage() {
             <Sparkles className="mr-3 h-8 w-8 text-secondary" />
             Spotlight: New Attars
           </h2>
-          <div className="marquee-container" role="region" aria-label="Spotlight New Attars Marquee">
+          <div 
+            ref={marqueeContainerRef} 
+            className="marquee-container" 
+            role="region" 
+            aria-label="Spotlight New Attars Marquee"
+            onMouseEnter={() => setIsMarqueePaused(true)} // Optional: pause on hover
+            onMouseLeave={() => setIsMarqueePaused(false)} // Optional: resume on leave
+          >
             <div
               ref={marqueeContentRef}
               className={cn("marquee-content", { 'paused': isMarqueePaused })}
             >
-              {marqueeAttarsDuplicated.map((product, index) => (
-                <div
-                  key={`${product.id}-${index}`}
-                  className="marquee-item"
-                  onClick={handleProductCardWrapperClick}
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))}
+              {marqueeAttarsDuplicated.map((product, index) => {
+                const itemKey = `${product.id}-${index}`;
+                return (
+                  <div
+                    key={itemKey}
+                    data-item-key={itemKey} // For IntersectionObserver targeting
+                    className={cn(
+                      "marquee-item",
+                      { 'is-centered': centeredItemKey === itemKey }
+                    )}
+                    onClick={() => {
+                      handleProductCardWrapperClick();
+                      setCenteredItemKey(itemKey); // Ensure clicked item is marked as centered
+                    }}
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -129,3 +247,4 @@ export default function HomePage() {
     </div>
   );
 }
+
