@@ -72,12 +72,12 @@ export default function ContactPage() {
 
         <div className="rounded-lg overflow-hidden shadow-lg">
           <Image 
-            src="https://placehold.co/800x600.png" 
-            alt="Customer service representative" 
+            src="/images/zoheb-attar-shop-front.jpg" 
+            alt="Zoheb Attar Shop front" 
             width={800} 
             height={600}
             className="object-cover w-full h-full aspect-[4/3]"
-            data-ai-hint="customer service contact"
+            data-ai-hint="shop front"
           />
         </div>
       </div>
