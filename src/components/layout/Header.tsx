@@ -42,9 +42,6 @@ export default function Header() {
     <>
       <NavLink href="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
       <NavLink href="/products" onClick={() => setIsMobileMenuOpen(false)}>Products</NavLink>
-      <NavLink href="/summarizer" onClick={() => setIsMobileMenuOpen(false)}>
-        <Sparkles className="mr-2 h-4 w-4 text-primary" /> AI Summarizer
-      </NavLink>
       <NavLink href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
         <Phone className="mr-2 h-4 w-4 text-primary" /> Contact Us
       </NavLink>
