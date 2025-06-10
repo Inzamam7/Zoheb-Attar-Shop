@@ -51,7 +51,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold">Email Us</h3>
                 <p className="text-muted-foreground">
-                  <Link href="mailto:contact@zohebattar.com" className="hover:text-primary">contact@zohebattar.com</Link>
+                  <Link href="mailto:zohebattarshop@gmail.com" className="hover:text-primary">zohebattarshop@gmail.com</Link>
                 </p>
               </div>
             </div>
