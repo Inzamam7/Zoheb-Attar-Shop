@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { WhatsappIcon } from '@/components/icons/WhatsappIcon';
 import Image from 'next/image';
 
-const WHATSAPP_NUMBER = "12345678900"; // Replace with your actual number e.g. 15551234567
+const WHATSAPP_NUMBER = "917397865199"; // Updated Number
 const WHATSAPP_MESSAGE = "Hello Zoheb Attar Shop!";
 
 export default function ContactPage() {

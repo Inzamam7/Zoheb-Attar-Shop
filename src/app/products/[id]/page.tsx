@@ -14,7 +14,7 @@ export async function generateStaticParams() {
   }));
 }
 
-const WHATSAPP_NUMBER = "12345678900"; // Replace with your actual number
+const WHATSAPP_NUMBER = "917397865199"; // Updated Number
 
 export default function ProductDetailsPage({ params }: { params: { id: string } }) {
   const product = getProductById(params.id);
