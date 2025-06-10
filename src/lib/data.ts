@@ -18,8 +18,8 @@ export const products: Product[] = [
     longDescription: 'Indulge in the distinct and memorable fragrance of Ak 47. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
     price: 20.00,
     categorySlug: 'signature-blends',
-    imageUrl: '/images/ak-47-attar.jpg', // Updated image path
-    imageHint: 'attar bottles', // Updated hint
+    imageUrl: '/images/ak-47-attar.jpg',
+    imageHint: 'attar bottles',
     featured: true,
     rating: 5,
   },
@@ -30,8 +30,8 @@ export const products: Product[] = [
     longDescription: 'Indulge in the distinct and memorable fragrance of Al khalij. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
     price: 21.00,
     categorySlug: 'signature-blends',
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'perfume bottle',
+    imageUrl: '/images/al-khalij.jpg', // Updated image path
+    imageHint: 'perfume box', // Updated hint
     featured: true,
     rating: 4,
   },
