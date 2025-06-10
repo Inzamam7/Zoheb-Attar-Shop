@@ -1,7 +1,7 @@
 
 "use client";
 import Image from 'next/image';
-import { getProductById, products as allProductsData } from '@/lib/data'; // allProductsData might be needed if not passed as prop
+import { getProductById, products as allProductsData } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { Star, ShoppingCart, ChevronLeft, Minus, Plus } from 'lucide-react';
 import Link from 'next/link';
@@ -26,48 +26,31 @@ export default function ProductDetailsClient({ product, relatedProducts }: Produ
 
   useEffect(() => {
     if (product && product.prices.length > 0) {
-      // Initialize with the first price option if not already set or if product changes
-      if (!selectedPriceInfo || selectedPriceInfo.size !== product.prices[0].size) {
+      if (!selectedPriceInfo || !product.prices.find(p => p.size === selectedPriceInfo.size)) {
         setSelectedPriceInfo(product.prices[0]);
-        setOrderQuantity(1); // Reset quantity when product or initial size changes
+        setOrderQuantity(1); 
       }
     }
-  }, [product, selectedPriceInfo]); // Added selectedPriceInfo to dependency to re-evaluate if it's somehow out of sync
-
-  // This ensures selectedPriceInfo is set on initial render if product is available
-  if (product && product.prices.length > 0 && !selectedPriceInfo) {
-    // This will only run if selectedPriceInfo is null, effectively setting initial state
-    // Note: Direct state setting here might be less ideal than useEffect, but covers edge cases.
-    // For cleaner approach, ensure useEffect handles all scenarios.
-    // However, to be absolutely sure it's set for the first render if product is immediately available:
-    // This is a bit of a belt-and-suspenders approach.
-    // The useEffect should handle this, but let's ensure it's non-null for calculations below if possible.
-    // Consider if selectedPriceInfo should be initialized directly from props if product exists
-    // For now, relying on useEffect, but defensive check for calculations:
-    const initialPriceInfo = product.prices[0];
-
-
-    // The selectedPriceInfo state will be updated by useEffect, so calculations below should use it.
-    // If selectedPriceInfo is null for the very first render pass before useEffect, calculations might use defaults.
-  }
-
+  }, [product, selectedPriceInfo]);
 
   const handleSizeChange = (sizeValue: string) => {
     const newPriceInfo = product.prices.find(p => p.size === sizeValue);
     if (newPriceInfo) {
       setSelectedPriceInfo(newPriceInfo);
-      setOrderQuantity(1); // Reset quantity when size changes
+      setOrderQuantity(1);
     }
   };
   
-  const currentSelectedPriceInfo = selectedPriceInfo || (product && product.prices.length > 0 ? product.prices[0] : { size: 'N/A', price: 0 });
+  const currentSelectedPriceInfoOrDefault = selectedPriceInfo || (product && product.prices.length > 0 ? product.prices[0] : { size: 'N/A', price: 0 });
+  const currentPriceValue = currentSelectedPriceInfoOrDefault.price * orderQuantity;
+  const currentSizeValue = currentSelectedPriceInfoOrDefault.size;
 
-
-  const currentPriceValue = currentSelectedPriceInfo ? currentSelectedPriceInfo.price * orderQuantity : 0;
-  const currentSizeValue = currentSelectedPriceInfo ? currentSelectedPriceInfo.size : "N/A";
-
-  const whatsappMessage = `Hi Zoheb Attar Shop,\n\nI'd like to place an order:\n\nProduct: ${product.name}\nSize: ${currentSizeValue}\nPrice per unit: $${currentSelectedPriceInfo?.price.toFixed(2)}\nQuantity: ${orderQuantity}\nTotal Price: $${currentPriceValue.toFixed(2)}\n\nMy Details:\nShipping Address: [Please provide your full address]\n\nPayment Preference: [e.g., Cash on Delivery, Online Transfer - Please specify]\n\nLooking forward to your confirmation! (Product ID: ${product.id})`;
+  const whatsappMessage = `Hello Zoheb Attar Shop, I want to buy ${product.name} (Size: ${currentSizeValue}, Quantity: ${orderQuantity}). Can you please provide more information?`;
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
+
+  if (!product) {
+    return <div>Loading product details...</div>; // Or a more sophisticated loading state
+  }
 
   return (
     <div className="space-y-12">
@@ -105,11 +88,11 @@ export default function ProductDetailsClient({ product, relatedProducts }: Produ
             </div>
           )}
 
-          {product.prices && product.prices.length > 0 && currentSelectedPriceInfo && (
+          {product.prices && product.prices.length > 0 && currentSelectedPriceInfoOrDefault && (
             <div className="space-y-4">
               <div>
                 <Label htmlFor="size-select" className="text-sm font-medium">Select Size:</Label>
-                <Select value={currentSelectedPriceInfo.size} onValueChange={handleSizeChange}>
+                <Select value={currentSelectedPriceInfoOrDefault.size} onValueChange={handleSizeChange}>
                   <SelectTrigger id="size-select" className="w-full sm:w-[200px] mt-1">
                     <SelectValue placeholder="Select size" />
                   </SelectTrigger>
@@ -158,7 +141,7 @@ export default function ProductDetailsClient({ product, relatedProducts }: Produ
             </Button>
             <div className="flex flex-col sm:flex-row sm:gap-4 space-y-3 sm:space-y-0">
               <WishlistButton productId={product.id} productName={product.name} />
-              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-green-500 text-green-600 hover:bg-green-500 hover:text-white" disabled={!currentSelectedPriceInfo || currentSelectedPriceInfo.size === 'N/A'}>
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-green-500 text-green-600 hover:bg-green-500 hover:text-white" disabled={currentSelectedPriceInfoOrDefault.size === 'N/A'}>
                 <Link href={whatsappLink} target="_blank" rel="noopener noreferrer">
                   <WhatsappIcon className="mr-2 h-5 w-5" /> Order on WhatsApp
                 </Link>
@@ -181,4 +164,3 @@ export default function ProductDetailsClient({ product, relatedProducts }: Produ
     </div>
   );
 }
-

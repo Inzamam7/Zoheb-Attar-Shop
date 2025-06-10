@@ -24,21 +24,23 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToWishlist, removeFromWishlist, isWishlisted } = useWishlist();
   const { toast } = useToast();
 
-  // Initialize selectedPriceInfo with the first price option or a default
   const [selectedPriceInfo, setSelectedPriceInfo] = useState<ProductPrice>(() => {
     return product.prices && product.prices.length > 0 ? product.prices[0] : { size: "N/A", price: 0 };
   });
 
-  // Effect to reset selectedPriceInfo if the product itself changes
   useEffect(() => {
     if (product && product.prices.length > 0) {
-      setSelectedPriceInfo(product.prices[0]);
+      const currentSelectedSizeStillExists = product.prices.some(p => p.size === selectedPriceInfo.size);
+      if (!currentSelectedSizeStillExists || product.id !== (product.prices[0] && product.prices[0].size === selectedPriceInfo.size ? product.id : null)) { // A bit convoluted, ensures reset if product changes or selected size is no longer valid
+        setSelectedPriceInfo(product.prices[0]);
+      }
     }
-  }, [product.id, product.prices]); // product.prices dependency for completeness
+  }, [product, product.prices, selectedPriceInfo.size]);
+
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation(); // Keep this if the card itself is a link
+    e.stopPropagation();
     if (isWishlisted(product.id)) {
       removeFromWishlist(product.id);
       toast({ title: `${product.name} removed from wishlist.` });
@@ -55,7 +57,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const whatsappMessage = `Hi Zoheb Attar Shop,\n\nI'd like to place an order for:\nProduct: ${product.name}\nSize: ${selectedPriceInfo.size}\nPrice per unit: $${selectedPriceInfo.price.toFixed(2)}\nQuantity: 1 (Please confirm or specify desired quantity)\n\nMy Details:\nShipping Address: [Please provide your full address]\n\nPayment Preference: [e.g., Cash on Delivery, Online Transfer - Please specify]\n\nLooking forward to your confirmation! (Product ID: ${product.id})`;
+  const whatsappMessage = `Hello Zoheb Attar Shop, I want to buy ${product.name} (Size: ${selectedPriceInfo.size}, Quantity: 1). Can you please provide more information?`;
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
@@ -131,4 +133,3 @@ export default function ProductCard({ product }: ProductCardProps) {
     </Card>
   );
 }
-
