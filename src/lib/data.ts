@@ -18,7 +18,7 @@ export const products: Product[] = [
     longDescription: 'Indulge in the distinct and memorable fragrance of Ak 47. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
     price: 20.00,
     categorySlug: 'signature-blends',
-    imageUrl: 'https://images.unsplash.com/photo-1576158114131-f211996e9137?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjaGFnZSUyMGltYWdlfGVufDB8fHx8MTc0OTU1Mjg4NHww&ixlib=rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1535683577427-740aaac4ec25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJmdW1lfGVufDB8fHx8MTc0OTUzNjYzOXww&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'attar bottles',
     featured: true,
     rating: 5,
@@ -298,6 +298,7 @@ export const getHighlightedNewAttars = (): Product[] => products.filter(p => p.h
     
 
     
+
 
 
 
