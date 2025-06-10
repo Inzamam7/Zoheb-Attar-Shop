@@ -24,19 +24,21 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToWishlist, removeFromWishlist, isWishlisted } = useWishlist();
   const { toast } = useToast();
 
-  const [selectedPriceInfo, setSelectedPriceInfo] = useState<ProductPrice>(() => {
-    return product.prices && product.prices.length > 0 ? product.prices[0] : { size: "N/A", price: 0 };
-  });
+  const [selectedPriceInfo, setSelectedPriceInfo] = useState<ProductPrice>(() => 
+    product.prices && product.prices.length > 0 
+      ? product.prices[0] 
+      : { size: "N/A", price: 0 }
+  );
 
+  // Effect to update selectedPriceInfo when the product prop changes.
+  // This is crucial for components reused in lists/marquees where the product prop might change.
   useEffect(() => {
-    if (product && product.prices.length > 0) {
-      const currentSelectedSizeStillExists = product.prices.some(p => p.size === selectedPriceInfo.size);
-      if (!currentSelectedSizeStillExists || product.id !== (product.prices[0] && product.prices[0].size === selectedPriceInfo.size ? product.id : null)) { // A bit convoluted, ensures reset if product changes or selected size is no longer valid
-        setSelectedPriceInfo(product.prices[0]);
-      }
-    }
-  }, [product, product.prices, selectedPriceInfo.size]);
-
+    setSelectedPriceInfo(
+      product.prices && product.prices.length > 0
+        ? product.prices[0]
+        : { size: "N/A", price: 0 }
+    );
+  }, [product]); // Only depend on the product prop.
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
