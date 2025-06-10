@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { WhatsappIcon } from '@/components/icons/WhatsappIcon';
 import Image from 'next/image';
 
-const WHATSAPP_NUMBER = "917397865199";
+const WHATSAPP_NUMBER = "7397865199";
 const DISPLAY_PHONE_NUMBER = "+91 73978 65199";
 const ADDRESS = "Opposite to Masjid Anwar Ilahi, Asra Nagar, Nanded";
 const WHATSAPP_MESSAGE = "Hello Zoheb Attar Shop!";
