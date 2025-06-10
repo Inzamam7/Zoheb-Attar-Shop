@@ -7,7 +7,7 @@ import { Star, ShoppingCart, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import ProductCard from '@/components/products/ProductCard';
 import WishlistButton from '@/components/products/WishlistButton';
-import { WhatsappIcon } from '@/components/icons/WhatsappIcon'; // Import WhatsApp icon
+import { WhatsappIcon } from '@/components/icons/WhatsappIcon';
 
 export async function generateStaticParams() {
   return allProducts.map((product) => ({
@@ -28,7 +28,7 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
     .filter(p => p.categorySlug === product.categorySlug && p.id !== product.id)
     .slice(0, 3);
 
-  const whatsappMessage = `Hi, I'm interested in ordering ${product.name} from Zoheb Attar Shop. (Product ID: ${product.id})`;
+  const whatsappMessage = `Hi Zoheb Attar Shop,\n\nI'd like to place an order:\n\nProduct: ${product.name}\nQuantity: 1 (Please confirm or specify desired quantity)\n\nMy Details:\nShipping Address: [Please provide your full address]\n\nPayment Preference: [e.g., Cash on Delivery, Online Transfer - Please specify]\n\nLooking forward to your confirmation! (Product ID: ${product.id})`;
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (

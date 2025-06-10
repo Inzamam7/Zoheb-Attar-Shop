@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -8,17 +9,20 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { Heart, Star } from 'lucide-react';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
+import { WhatsappIcon } from '@/components/icons/WhatsappIcon';
 
 interface ProductCardProps {
   product: Product;
 }
+
+const WHATSAPP_NUMBER = "917397865199"; // Consistent WhatsApp number
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToWishlist, removeFromWishlist, isWishlisted } = useWishlist();
   const { toast } = useToast();
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent link navigation if card is wrapped in Link
+    e.preventDefault(); 
     e.stopPropagation();
     if (isWishlisted(product.id)) {
       removeFromWishlist(product.id);
@@ -28,6 +32,9 @@ export default function ProductCard({ product }: ProductCardProps) {
       toast({ title: `${product.name} added to wishlist!` });
     }
   };
+
+  const whatsappMessage = `Hi Zoheb Attar Shop,\n\nI'd like to place an order:\n\nProduct: ${product.name}\nQuantity: 1 (Please confirm or specify desired quantity)\n\nMy Details:\nShipping Address: [Please provide your full address]\n\nPayment Preference: [e.g., Cash on Delivery, Online Transfer - Please specify]\n\nLooking forward to your confirmation!`;
+  const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col rounded-lg">
@@ -58,19 +65,25 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
           <p className="text-lg font-semibold text-primary">${product.price.toFixed(2)}</p>
         </CardContent>
-        <CardFooter className="p-4 pt-0 mt-auto">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleWishlistToggle}
-            className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-            aria-label={isWishlisted(product.id) ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
-          >
-            <Heart className={`mr-2 h-4 w-4 ${isWishlisted(product.id) ? 'fill-primary' : ''}`} />
-            {isWishlisted(product.id) ? 'Wishlisted' : 'Add to Wishlist'}
-          </Button>
-        </CardFooter>
       </Link>
+      {/* Link removed from wrapping CardFooter to allow separate button actions */}
+      <CardFooter className="p-4 pt-0 mt-auto flex flex-col sm:flex-row gap-2">
+        <Button asChild size="sm" className="flex-1 bg-green-500 hover:bg-green-600 text-white">
+          <Link href={whatsappLink} target="_blank" rel="noopener noreferrer">
+            <WhatsappIcon className="mr-2 h-4 w-4" /> Buy Now
+          </Link>
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleWishlistToggle}
+          className="flex-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+          aria-label={isWishlisted(product.id) ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+        >
+          <Heart className={`mr-2 h-4 w-4 ${isWishlisted(product.id) ? 'fill-primary' : ''}`} />
+          {isWishlisted(product.id) ? 'Wishlisted' : 'Wishlist'}
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
