@@ -1,6 +1,7 @@
+
 "use client";
 import Link from 'next/link';
-import { Flame, Heart, Search, Sparkles, Menu, X, Phone } from 'lucide-react';
+import { Gem, Heart, Search, Sparkles, Menu, X, Phone } from 'lucide-react'; // Changed Flame to Gem
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useWishlist } from '@/contexts/WishlistContext';
@@ -54,7 +55,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2" aria-label="Zoheb Attar Shop Home" onClick={() => setIsMobileMenuOpen(false)}>
-          <Flame className="h-7 w-7 text-primary" />
+          <Gem className="h-7 w-7 text-primary" /> {/* Changed Flame to Gem */}
           <span className="text-xl font-bold font-headline text-primary">Zoheb Attar Shop</span>
         </Link>
 
@@ -96,7 +97,7 @@ export default function Header() {
               <SheetContent side="right" className="w-[280px] p-6">
                 <div className="mb-6 flex justify-between items-center">
                   <Link href="/" className="flex items-center gap-2" aria-label="Zoheb Attar Shop Home" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Flame className="h-6 w-6 text-primary" />
+                    <Gem className="h-6 w-6 text-primary" /> {/* Changed Flame to Gem */}
                     <span className="text-lg font-bold font-headline text-primary">Zoheb Attar Shop</span>
                   </Link>
                   <SheetClose asChild>
