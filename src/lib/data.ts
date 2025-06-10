@@ -23,6 +23,7 @@ export const products: Product[] = [
     featured: true,
     rating: 5,
     isNewArrival: true,
+    highlightedNewAttar: true,
   },
   {
     id: 'p2',
@@ -75,6 +76,7 @@ export const products: Product[] = [
     featured: false,
     rating: 5,
     isNewArrival: true,
+    highlightedNewAttar: true,
   },
   {
     id: 'p6',
@@ -290,9 +292,11 @@ export const getProductsByCategory = (slug: string): Product[] => products.filte
 
 export const getFeaturedProducts = (): Product[] => products.filter(p => p.featured).sort((a, b) => (b.rating || 0) - (a.rating || 0));
 
-export const getNewArrivals = (): Product[] => products.filter(p => p.isNewArrival).sort((a,b) => a.name.localeCompare(b.name)); // Example sort, can be by date if available
+export const getNewArrivals = (): Product[] => products.filter(p => p.isNewArrival).sort((a,b) => a.name.localeCompare(b.name));
 
+export const getHighlightedNewAttars = (): Product[] => products.filter(p => p.highlightedNewAttar).sort((a,b) => a.name.localeCompare(b.name));
     
 
     
+
 

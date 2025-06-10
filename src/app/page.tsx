@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/products/ProductCard';
-import { getFeaturedProducts, getNewArrivals } from '@/lib/data';
+import { getFeaturedProducts, getNewArrivals, getHighlightedNewAttars } from '@/lib/data';
 import Image from 'next/image';
-import { PackagePlus } from 'lucide-react';
+import { PackagePlus, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts();
   const newArrivals = getNewArrivals();
+  const highlightedNewAttars = getHighlightedNewAttars();
 
   return (
     <div className="space-y-16">
@@ -28,6 +29,21 @@ export default function HomePage() {
           </Button>
         </div>
       </section>
+
+      {/* Spotlight New Attars Section */}
+      {highlightedNewAttars.length > 0 && (
+        <section>
+          <h2 className="text-3xl font-bold text-center mb-10 font-headline flex items-center justify-center">
+            <Sparkles className="mr-3 h-8 w-8 text-secondary" />
+            Spotlight: New Attars
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {highlightedNewAttars.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* New Arrivals Section */}
       {newArrivals.length > 0 && (

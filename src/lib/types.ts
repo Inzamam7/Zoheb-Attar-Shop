@@ -16,5 +16,6 @@ export type Product = {
   featured?: boolean;
   rating?: number; // Optional, 1-5
   isNewArrival?: boolean; // Added for new arrivals
+  highlightedNewAttar?: boolean; // For the new spotlight section
 };
 
