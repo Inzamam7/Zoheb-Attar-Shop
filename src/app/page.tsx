@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/products/ProductCard';
@@ -48,11 +49,7 @@ export default function HomePage() {
       {/* New Arrivals Section */}
       {newArrivals.length > 0 && (
         <section>
-          <h2 className="text-3xl font-bold text-center mb-10 font-headline flex items-center justify-center">
-            <PackagePlus className="mr-3 h-8 w-8 text-primary" />
-            New Arrivals
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-8"> {/* Added pt-8 for spacing if needed */}
             {newArrivals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
