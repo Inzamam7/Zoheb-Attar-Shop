@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -104,5 +105,46 @@
   }
   h1,h2,h3,h4,h5,h6 {
     @apply font-headline;
+  }
+}
+
+@layer utilities {
+  .marquee-container {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    /* Optional: add fading edges for a smoother appearance */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  }
+
+  .marquee-content {
+    display: flex; /* Lays out items (ProductCard wrappers) in a row */
+    flex-shrink: 0; /* Prevents the flex container from shrinking its content */
+    animation: marquee-scroll 40s linear infinite; /* Adjust duration based on content width and desired speed */
+                                                  /* e.g., 2 highlighted attars * 2 for duplication = 4 items. 40s might be reasonable. */
+  }
+
+  .marquee-content.paused {
+    animation-play-state: paused;
+  }
+
+  .marquee-item {
+    flex: 0 0 auto; /* Each item takes its content width, doesn't grow or shrink */
+    margin-right: 1.5rem; /* Corresponds to gap-6 (24px) */
+    /* Consider setting a min-width or width on ProductCard or here if widths vary too much */
+    /* width: 280px; */
+  }
+
+  @keyframes marquee-scroll {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      /* Animates a div containing two sets of items (original + duplicate).
+         Translates by the width of one set (50% of the total width of .marquee-content)
+         to create a seamless loop. */
+      transform: translateX(-50%);
+    }
   }
 }

@@ -1,15 +1,30 @@
 
+"use client"; // Required for useState and useEffect
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/products/ProductCard';
 import { getFeaturedProducts, getNewArrivals, getHighlightedNewAttars } from '@/lib/data';
 import Image from 'next/image';
 import { PackagePlus, Sparkles } from 'lucide-react';
+import { useState, useRef } from 'react'; // Added useState, useRef
+import { cn } from '@/lib/utils';
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts();
   const newArrivals = getNewArrivals();
   const highlightedNewAttars = getHighlightedNewAttars();
+
+  const [isMarqueePaused, setIsMarqueePaused] = useState(false);
+  const marqueeContentRef = useRef<HTMLDivElement>(null);
+
+  // Duplicate attars for seamless scrolling, only if there are items
+  const marqueeAttarsDuplicated = highlightedNewAttars.length > 0 ? [...highlightedNewAttars, ...highlightedNewAttars] : [];
+
+  const handleProductCardWrapperClick = () => {
+    setIsMarqueePaused(true);
+    // Navigation will proceed via the Link component within ProductCard
+  };
 
   return (
     <div className="space-y-16">
@@ -38,10 +53,21 @@ export default function HomePage() {
             <Sparkles className="mr-3 h-8 w-8 text-secondary" />
             Spotlight: New Attars
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {highlightedNewAttars.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+          <div className="marquee-container" role="region" aria-label="Spotlight New Attars Marquee">
+            <div
+              ref={marqueeContentRef}
+              className={cn("marquee-content", { 'paused': isMarqueePaused })}
+            >
+              {marqueeAttarsDuplicated.map((product, index) => (
+                <div
+                  key={`${product.id}-${index}`}
+                  className="marquee-item"
+                  onClick={handleProductCardWrapperClick}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
@@ -49,7 +75,7 @@ export default function HomePage() {
       {/* New Arrivals Section */}
       {newArrivals.length > 0 && (
         <section>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-8"> {/* Added pt-8 for spacing if needed */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-8">
             {newArrivals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
