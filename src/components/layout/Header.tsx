@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { Flame, Heart, Search, Sparkles, Menu, X } from 'lucide-react';
+import { Flame, Heart, Search, Sparkles, Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useWishlist } from '@/contexts/WishlistContext';
@@ -8,9 +8,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 
-const NavLink = ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) => (
+const NavLink = ({ href, children, onClick, className }: { href: string; children: React.ReactNode; onClick?: () => void; className?: string; }) => (
   <Link href={href} passHref>
-    <Button variant="ghost" className="text-sm font-medium hover:bg-primary/10 hover:text-primary" onClick={onClick}>
+    <Button variant="ghost" className={cn("text-sm font-medium hover:bg-primary/10 hover:text-primary", className)} onClick={onClick}>
       {children}
     </Button>
   </Link>
@@ -34,6 +34,7 @@ export default function Header() {
     } else {
       router.push('/products');
     }
+    setIsMobileMenuOpen(false); // Close mobile menu on search
   };
 
   const navItems = (
@@ -43,18 +44,21 @@ export default function Header() {
       <NavLink href="/summarizer" onClick={() => setIsMobileMenuOpen(false)}>
         <Sparkles className="mr-2 h-4 w-4 text-primary" /> AI Summarizer
       </NavLink>
+      <NavLink href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+        <Phone className="mr-2 h-4 w-4 text-primary" /> Contact Us
+      </NavLink>
     </>
   );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2" aria-label="Zoheb Attar Shop Home">
+        <Link href="/" className="flex items-center gap-2" aria-label="Zoheb Attar Shop Home" onClick={() => setIsMobileMenuOpen(false)}>
           <Flame className="h-7 w-7 text-primary" />
           <span className="text-xl font-bold font-headline text-primary">Zoheb Attar Shop</span>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-2">
+        <nav className="hidden md:flex items-center space-x-1">
           {navItems}
         </nav>
 
@@ -73,7 +77,7 @@ export default function Header() {
             </Button>
           </form>
           <Link href="/wishlist" passHref>
-            <Button variant="ghost" size="icon" className="relative text-primary hover:bg-primary/10" aria-label={`View wishlist, ${wishlistCount} items`}>
+            <Button variant="ghost" size="icon" className="relative text-primary hover:bg-primary/10" aria-label={`View wishlist, ${wishlistCount} items`} onClick={() => setIsMobileMenuOpen(false)}>
               <Heart className="h-5 w-5" />
               {wishlistCount > 0 && (
                 <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-xs font-bold text-secondary-foreground">
@@ -90,27 +94,33 @@ export default function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[280px] p-6">
-                <div className="flex flex-col space-y-4">
-                 <SheetClose asChild>
-                    <Button variant="ghost" size="icon" className="self-end" aria-label="Close menu">
-                      <X className="h-6 w-6" />
-                    </Button>
+                <div className="mb-6 flex justify-between items-center">
+                  <Link href="/" className="flex items-center gap-2" aria-label="Zoheb Attar Shop Home" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Flame className="h-6 w-6 text-primary" />
+                    <span className="text-lg font-bold font-headline text-primary">Zoheb Attar Shop</span>
+                  </Link>
+                  <SheetClose asChild>
+                      <Button variant="ghost" size="icon" aria-label="Close menu">
+                        <X className="h-6 w-6" />
+                      </Button>
                   </SheetClose>
-                  {navItems}
-                   <form onSubmit={(e) => {handleSearch(e); setIsMobileMenuOpen(false);}} className="flex items-center relative mt-4">
-                    <Input
-                      type="search"
-                      placeholder="Search..."
-                      className="h-9 pr-10"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      aria-label="Search products"
-                    />
-                    <Button type="submit" variant="ghost" size="icon" className="absolute right-0 h-9 w-9 text-muted-foreground hover:text-primary" aria-label="Submit search">
-                      <Search className="h-4 w-4" />
-                    </Button>
-                  </form>
                 </div>
+                <form onSubmit={handleSearch} className="flex items-center relative mb-4">
+                  <Input
+                    type="search"
+                    placeholder="Search..."
+                    className="h-9 pr-10"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    aria-label="Search products"
+                  />
+                  <Button type="submit" variant="ghost" size="icon" className="absolute right-0 h-9 w-9 text-muted-foreground hover:text-primary" aria-label="Submit search">
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </form>
+                <nav className="flex flex-col space-y-2">
+                 {navItems}
+                </nav>
               </SheetContent>
             </Sheet>
           </div>
@@ -118,4 +128,9 @@ export default function Header() {
       </div>
     </header>
   );
+}
+
+// Helper cn function if not already in this file (it's usually in utils)
+function cn(...classes: (string | undefined | null | false)[]) {
+  return classes.filter(Boolean).join(' ');
 }

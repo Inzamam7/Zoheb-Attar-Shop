@@ -2,16 +2,19 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getProductById, products as allProducts } from '@/lib/data';
 import { Button } from '@/components/ui/button';
-import { Heart, Star, ShoppingCart, ChevronLeft } from 'lucide-react';
+import { Star, ShoppingCart, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import ProductCard from '@/components/products/ProductCard';
-import WishlistButton from '@/components/products/WishlistButton'; // Separate component for client-side logic
+import WishlistButton from '@/components/products/WishlistButton';
+import { WhatsappIcon } from '@/components/icons/WhatsappIcon'; // Import WhatsApp icon
 
 export async function generateStaticParams() {
   return allProducts.map((product) => ({
     id: product.id,
   }));
 }
+
+const WHATSAPP_NUMBER = "12345678900"; // Replace with your actual number
 
 export default function ProductDetailsPage({ params }: { params: { id: string } }) {
   const product = getProductById(params.id);
@@ -23,6 +26,9 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
   const relatedProducts = allProducts
     .filter(p => p.categorySlug === product.categorySlug && p.id !== product.id)
     .slice(0, 3);
+
+  const whatsappMessage = `Hi, I'm interested in ordering ${product.name} from Zoheb Attar Shop. (Product ID: ${product.id})`;
+  const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <div className="space-y-12">
@@ -66,11 +72,18 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
             {product.longDescription || product.description}
           </p>
 
-          <div className="pt-4 space-y-3 sm:space-y-0 sm:flex sm:gap-4">
-            <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-primary to-red-600 hover:from-primary/90 hover:to-red-600/90 text-primary-foreground shadow-md transition-all hover:shadow-lg">
+          <div className="pt-4 space-y-3">
+            <Button size="lg" className="w-full bg-gradient-to-r from-primary to-red-600 hover:from-primary/90 hover:to-red-600/90 text-primary-foreground shadow-md transition-all hover:shadow-lg">
               <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart (Demo)
             </Button>
-            <WishlistButton productId={product.id} productName={product.name} />
+            <div className="flex flex-col sm:flex-row sm:gap-4 space-y-3 sm:space-y-0">
+              <WishlistButton productId={product.id} productName={product.name} />
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-green-500 text-green-600 hover:bg-green-500 hover:text-white">
+                <Link href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                  <WhatsappIcon className="mr-2 h-5 w-5" /> Order on WhatsApp
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

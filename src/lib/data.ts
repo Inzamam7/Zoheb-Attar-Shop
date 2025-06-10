@@ -5,6 +5,7 @@ export const categories: Category[] = [
   { id: '2', name: 'Floral Scents', slug: 'floral-scents' },
   { id: '3', name: 'Woody Notes', slug: 'woody-notes' },
   { id: '4', name: 'Limited Edition', slug: 'limited-edition' },
+  { id: '5', name: 'Spicy & Exotic', slug: 'spicy-exotic' },
 ];
 
 export const products: Product[] = [
@@ -77,6 +78,18 @@ export const products: Product[] = [
     imageHint: 'desert landscape',
     featured: true,
     rating: 5
+  },
+  {
+    id: '7',
+    name: 'Volcanic Spice',
+    description: 'A fiery blend of clove, cinnamon, and black pepper.',
+    longDescription: 'Ignite your senses with Volcanic Spice. This bold attar combines the warmth of clove and cinnamon with a kick of black pepper, grounded by a subtle smoky undertone. Not for the faint of heart, this fragrance is for those who dare to stand out.',
+    price: 68.00,
+    categorySlug: 'spicy-exotic',
+    imageUrl: 'https://placehold.co/600x400.png',
+    imageHint: 'spices volcano',
+    featured: false,
+    rating: 4,
   },
 ];
 
