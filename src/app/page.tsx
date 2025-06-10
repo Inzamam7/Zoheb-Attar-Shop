@@ -18,14 +18,13 @@ export default function HomePage() {
   const [isMarqueePaused, setIsMarqueePaused] = useState(false);
   const [centeredItemKey, setCenteredItemKey] = useState<string | null>(null);
   const marqueeContentRef = useRef<HTMLDivElement>(null);
-  const marqueeContainerRef = useRef<HTMLDivElement>(null); // Ref for the marquee container
+  const marqueeContainerRef = useRef<HTMLDivElement>(null); 
 
-  // Duplicate attars for seamless scrolling, only if there are items
   const marqueeAttarsDuplicated = highlightedNewAttars.length > 0 ? [...highlightedNewAttars, ...highlightedNewAttars] : [];
 
-  const handleProductCardWrapperClick = () => {
+  const handleProductCardWrapperClick = (itemKey: string) => {
     setIsMarqueePaused(true);
-    // Navigation will proceed via the Link component within ProductCard
+    setCenteredItemKey(itemKey); 
   };
 
   useEffect(() => {
@@ -33,9 +32,7 @@ export default function HomePage() {
     const contentNode = marqueeContentRef.current;
 
     if (!marqueeNode || !contentNode || marqueeAttarsDuplicated.length === 0) {
-      // If marquee is paused and nothing is centered, try to find a center once.
       if (isMarqueePaused && !centeredItemKey && contentNode && marqueeNode) {
-         // Manually trigger a check if paused and no item is centered.
         const itemsForManualCheck = Array.from(contentNode.children) as HTMLElement[];
         let closestItemManual: HTMLElement | null = null;
         let minDistanceManual = Infinity;
@@ -44,7 +41,6 @@ export default function HomePage() {
 
         itemsForManualCheck.forEach(itemEl => {
             const itemRect = itemEl.getBoundingClientRect();
-            // Ensure item is somewhat visible in the container
             if (itemRect.right > marqueeContainerRectManual.left && itemRect.left < marqueeContainerRectManual.right) {
                 const itemCenter = itemRect.left + itemRect.width / 2;
                 const distance = Math.abs(containerCenterManual - itemCenter);
@@ -57,24 +53,21 @@ export default function HomePage() {
         if (closestItemManual) {
             setCenteredItemKey(closestItemManual.dataset.itemKey || null);
         }
-
       }
       return;
     }
-
 
     const items = Array.from(contentNode.children) as HTMLElement[];
     if (items.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (isMarqueePaused && centeredItemKey) return; // Don't update if paused and an item is already centered
+        if (isMarqueePaused && centeredItemKey) return; 
 
         let closestItem: HTMLElement | null = null;
         let minDistance = Infinity;
 
         const marqueeContainerRect = marqueeNode.getBoundingClientRect();
-        // Ensure rect has valid width to avoid division by zero or NaN issues
         if (marqueeContainerRect.width === 0) return;
         const containerCenter = marqueeContainerRect.left + marqueeContainerRect.width / 2;
 
@@ -84,9 +77,7 @@ export default function HomePage() {
             const itemCenter = itemRect.left + itemRect.width / 2;
             const distance = Math.abs(containerCenter - itemCenter);
 
-            // Prioritize items that are more fully visible and closer to the center
-            // Adjust intersectionRatio threshold as needed
-            if (distance < minDistance && entry.intersectionRatio > 0.1) {
+            if (distance < minDistance && entry.intersectionRatio > 0.05) { // Check for at least 5% visibility
               minDistance = distance;
               closestItem = entry.target as HTMLElement;
             }
@@ -96,18 +87,15 @@ export default function HomePage() {
         if (closestItem) {
           setCenteredItemKey(closestItem.dataset.itemKey || null);
         } else {
-           // If no item is clearly "centered" but some are visible,
-           // we might want to clear the centeredItemKey or pick the most visible one.
-           // For now, if nothing is actively centered, we can clear it.
-           const anyIntersecting = entries.some(e => e.isIntersecting && e.intersectionRatio > 0.05);
-           if (!anyIntersecting) {
+           const anyIntersecting = entries.some(e => e.isIntersecting && e.intersectionRatio > 0.01); // A very low threshold
+           if (!anyIntersecting && !isMarqueePaused) { // Only clear if not paused and nothing is visible
              setCenteredItemKey(null);
            }
         }
       },
       {
         root: marqueeNode,
-        threshold: Array.from({ length: 21 }, (_, i) => i * 0.05), // Check every 5%
+        threshold: Array.from({ length: 101 }, (_, i) => i * 0.01), // Check every 1% for smoother updates
       }
     );
 
@@ -121,9 +109,6 @@ export default function HomePage() {
       });
       observer.disconnect();
     };
-  // Re-run observer setup if the list of attars changes.
-  // isMarqueePaused is included so that if we un-pause, the observer can re-evaluate.
-  // centeredItemKey is added to help re-evaluate if marquee is paused and no item is centered.
   }, [highlightedNewAttars, isMarqueePaused, centeredItemKey, marqueeAttarsDuplicated.length]);
 
 
@@ -132,7 +117,6 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative rounded-lg overflow-hidden shadow-xl min-h-[400px] md:min-h-[500px] flex items-center justify-center text-center p-8 bg-gradient-to-br from-primary via-red-500 to-secondary">
         <div className="absolute inset-0 opacity-20">
-           {/* Optional: add subtle background image pattern here if desired */}
         </div>
         <div className="relative z-10 max-w-3xl">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-headline mb-6 text-primary-foreground drop-shadow-md">
@@ -159,8 +143,20 @@ export default function HomePage() {
             className="marquee-container" 
             role="region" 
             aria-label="Spotlight New Attars Marquee"
-            onMouseEnter={() => setIsMarqueePaused(true)} // Optional: pause on hover
-            onMouseLeave={() => setIsMarqueePaused(false)} // Optional: resume on leave
+            onMouseEnter={() => { if (!isMarqueePaused) setIsMarqueePaused(true); }} // Pause on hover only if not already click-paused
+            onMouseLeave={() => { 
+              // Resume on leave only if it was paused by hover, not by click
+              // This is a bit tricky; for now, let's assume if it's paused and a specific item is centered due to a click, we don't auto-resume.
+              // A simpler approach: always resume on mouse leave if no item is specifically centered by a click.
+              // For now, to avoid complex state, let's stick to simple pause/resume on hover if not click-paused.
+              // If you want more sophisticated hover pause/resume logic, let me know.
+              // Current logic: if it's paused and a centeredItemKey is set (implying a click might have happened), don't resume.
+              // If it's paused and NO centeredItemKey, it was likely a generic hover, so resume.
+              if (isMarqueePaused && !centeredItemKey) setIsMarqueePaused(false); 
+              // Or even simpler: if you want hover to always pause/resume regardless of click state (unless you manually unpause later)
+              // setIsMarqueePaused(true); on enter, setIsMarqueePaused(false); on leave.
+              // The current implementation: onMouseLeave={() => setIsMarqueePaused(false)} will resume animation if mouse leaves
+            }}
           >
             <div
               ref={marqueeContentRef}
@@ -171,15 +167,12 @@ export default function HomePage() {
                 return (
                   <div
                     key={itemKey}
-                    data-item-key={itemKey} // For IntersectionObserver targeting
+                    data-item-key={itemKey} 
                     className={cn(
                       "marquee-item",
                       { 'is-centered': centeredItemKey === itemKey }
                     )}
-                    onClick={() => {
-                      handleProductCardWrapperClick();
-                      setCenteredItemKey(itemKey); // Ensure clicked item is marked as centered
-                    }}
+                    onClick={() => handleProductCardWrapperClick(itemKey)}
                   >
                     <ProductCard product={product} />
                   </div>

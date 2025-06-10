@@ -113,16 +113,15 @@
     display: flex;
     overflow: hidden;
     width: 100%;
-    /* Optional: add fading edges for a smoother appearance */
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    padding: 1rem 0; /* Add some padding to ensure scaled items don't get clipped */
+    padding: 1rem 0; 
   }
 
   .marquee-content {
-    display: flex; /* Lays out items (ProductCard wrappers) in a row */
-    flex-shrink: 0; /* Prevents the flex container from shrinking its content */
-    animation: marquee-scroll 25s linear infinite; /* Adjusted duration for faster speed */
+    display: flex; 
+    flex-shrink: 0; 
+    animation: marquee-scroll 15s linear infinite; /* Increased speed from 25s to 15s */
   }
 
   .marquee-content.paused {
@@ -130,23 +129,20 @@
   }
 
   .marquee-item {
-    flex: 0 0 auto; /* Each item takes its content width, doesn't grow or shrink */
-    margin-right: 1.5rem; /* Corresponds to gap-6 (24px) */
-    /* Styling for non-centered items */
+    flex: 0 0 auto; 
+    margin-right: 1.5rem; 
     transform: scale(0.9);
     filter: blur(1.5px);
     opacity: 0.7;
     transition: transform 0.4s ease-out, filter 0.4s ease-out, opacity 0.4s ease-out;
-    /* Ensure clicks go through if needed, though ProductCard is linked */
     cursor: pointer; 
   }
 
   .marquee-item.is-centered {
-    /* Styling for the centered item */
-    transform: scale(1.05); /* Slightly larger than normal */
+    transform: scale(1.05); 
     filter: blur(0px);
     opacity: 1;
-    z-index: 10; /* Bring to front */
+    z-index: 10; 
   }
 
 
@@ -155,9 +151,6 @@
       transform: translateX(0%);
     }
     100% {
-      /* Animates a div containing two sets of items (original + duplicate).
-         Translates by the width of one set (50% of the total width of .marquee-content)
-         to create a seamless loop. */
       transform: translateX(-50%);
     }
   }

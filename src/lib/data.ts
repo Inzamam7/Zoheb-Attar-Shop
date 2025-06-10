@@ -53,6 +53,7 @@ export const products: Product[] = [
     featured: true,
     rating: 4,
     isNewArrival: true,
+    highlightedNewAttar: true, // Added to marquee
   },
   {
     id: 'p3',
@@ -66,6 +67,7 @@ export const products: Product[] = [
     featured: true,
     rating: 5,
     isNewArrival: false,
+    highlightedNewAttar: true, // Added to marquee
   },
   {
     id: 'p4',
@@ -119,6 +121,7 @@ export const products: Product[] = [
     featured: false,
     rating: 5,
     isNewArrival: true,
+    highlightedNewAttar: true, // Added to marquee
   },
   {
     id: 'p8',
@@ -311,3 +314,4 @@ export const getFeaturedProducts = (): Product[] => products.filter(p => p.featu
 export const getNewArrivals = (): Product[] => products.filter(p => p.isNewArrival).sort((a,b) => a.name.localeCompare(b.name));
 
 export const getHighlightedNewAttars = (): Product[] => products.filter(p => p.highlightedNewAttar).sort((a,b) => a.name.localeCompare(b.name));
+
