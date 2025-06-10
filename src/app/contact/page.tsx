@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Mail, MapPin, Phone } from 'lucide-react';
@@ -5,7 +6,9 @@ import Link from 'next/link';
 import { WhatsappIcon } from '@/components/icons/WhatsappIcon';
 import Image from 'next/image';
 
-const WHATSAPP_NUMBER = "917397865199"; // Updated Number
+const WHATSAPP_NUMBER = "917397865199";
+const DISPLAY_PHONE_NUMBER = "+91 73978 65199";
+const ADDRESS = "Opposite to Masjid Anwar Ilahi, Asra Nagar, Nanded";
 const WHATSAPP_MESSAGE = "Hello Zoheb Attar Shop!";
 
 export default function ContactPage() {
@@ -31,7 +34,7 @@ export default function ContactPage() {
               <MapPin className="h-6 w-6 text-primary mt-1 shrink-0" />
               <div>
                 <h3 className="font-semibold">Our Address</h3>
-                <p className="text-muted-foreground">123 Fragrance Lane, Scent City, Perfumistan 45678</p>
+                <p className="text-muted-foreground">{ADDRESS}</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -39,7 +42,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold">Call Us</h3>
                 <p className="text-muted-foreground">
-                  <Link href="tel:+15552766200" className="hover:text-primary">+1 (555) AROMA-00</Link>
+                  <Link href={`tel:${DISPLAY_PHONE_NUMBER.replace(/\s/g, '')}`} className="hover:text-primary">{DISPLAY_PHONE_NUMBER}</Link>
                 </p>
               </div>
             </div>

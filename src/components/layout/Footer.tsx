@@ -1,7 +1,8 @@
+
 import Link from 'next/link';
 import { WhatsappIcon } from '@/components/icons/WhatsappIcon';
 
-const WHATSAPP_NUMBER = "917397865199"; // Updated Number
+const WHATSAPP_NUMBER = "917397865199";
 const WHATSAPP_MESSAGE = "Hello Zoheb Attar Shop!";
 
 export default function Footer() {

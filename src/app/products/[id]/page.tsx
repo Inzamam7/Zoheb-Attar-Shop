@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getProductById, products as allProducts } from '@/lib/data';
@@ -14,7 +15,7 @@ export async function generateStaticParams() {
   }));
 }
 
-const WHATSAPP_NUMBER = "917397865199"; // Updated Number
+const WHATSAPP_NUMBER = "917397865199";
 
 export default function ProductDetailsPage({ params }: { params: { id: string } }) {
   const product = getProductById(params.id);
