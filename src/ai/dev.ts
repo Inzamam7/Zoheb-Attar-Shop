@@ -1,4 +1,5 @@
 import { config } from 'dotenv';
 config();
 
-import '@/ai/flows/product-summarizer.ts';
+// Intentionally leaving this empty after removing product-summarizer.ts import
+// If you have other flows, they would be imported here.
