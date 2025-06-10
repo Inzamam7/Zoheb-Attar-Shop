@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -39,10 +40,15 @@ export default function ProductsPage() {
       tempProducts = tempProducts.filter(product => product.categorySlug === selectedCategory);
     }
 
+    // Helper to get the base price (price of the first size option)
+    const getBasePrice = (product: Product) => {
+      return product.prices && product.prices.length > 0 ? product.prices[0].price : 0;
+    };
+
     if (sortOption === 'price-asc') {
-      tempProducts.sort((a, b) => a.price - b.price);
+      tempProducts.sort((a, b) => getBasePrice(a) - getBasePrice(b));
     } else if (sortOption === 'price-desc') {
-      tempProducts.sort((a, b) => b.price - a.price);
+      tempProducts.sort((a, b) => getBasePrice(b) - getBasePrice(a));
     } else if (sortOption === 'name-asc') {
       tempProducts.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortOption === 'name-desc') {

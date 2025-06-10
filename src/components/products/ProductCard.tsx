@@ -15,14 +15,14 @@ interface ProductCardProps {
   product: Product;
 }
 
-const WHATSAPP_NUMBER = "917397865199"; // Consistent WhatsApp number
+const WHATSAPP_NUMBER = "917397865199";
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToWishlist, removeFromWishlist, isWishlisted } = useWishlist();
   const { toast } = useToast();
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
     e.stopPropagation();
     if (isWishlisted(product.id)) {
       removeFromWishlist(product.id);
@@ -33,7 +33,10 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const whatsappMessage = `Hi Zoheb Attar Shop,\n\nI'd like to place an order:\n\nProduct: ${product.name}\nQuantity: 1 (Please confirm or specify desired quantity)\n\nMy Details:\nShipping Address: [Please provide your full address]\n\nPayment Preference: [e.g., Cash on Delivery, Online Transfer - Please specify]\n\nLooking forward to your confirmation!`;
+  const basePriceInfo = product.prices.length > 0 ? product.prices[0] : { size: 'N/A', price: 0 };
+  const availableSizes = product.prices.map(p => p.size).join(', ');
+
+  const whatsappMessage = `Hi Zoheb Attar Shop,\n\nI'd like to place an order for: ${product.name}\n\nAvailable Sizes: ${availableSizes}\nPlease specify desired size.\nQuantity: 1 (Please confirm or specify desired quantity for the chosen size)\n\nMy Details:\nShipping Address: [Please provide your full address]\n\nPayment Preference: [e.g., Cash on Delivery, Online Transfer - Please specify]\n\nLooking forward to your confirmation! (Product ID: ${product.id})`;
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
@@ -63,10 +66,11 @@ export default function ProductCard({ product }: ProductCardProps) {
               <span className="ml-1 text-xs text-muted-foreground">({product.rating})</span>
             </div>
           )}
-          <p className="text-lg font-semibold text-primary">${product.price.toFixed(2)}</p>
+          <p className="text-lg font-semibold text-primary">
+            From ${basePriceInfo.price.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">({basePriceInfo.size})</span>
+          </p>
         </CardContent>
       </Link>
-      {/* Link removed from wrapping CardFooter to allow separate button actions */}
       <CardFooter className="p-4 pt-0 mt-auto flex flex-col sm:flex-row gap-2">
         <Button asChild size="sm" className="flex-1 bg-green-500 hover:bg-green-600 text-white">
           <Link href={whatsappLink} target="_blank" rel="noopener noreferrer">

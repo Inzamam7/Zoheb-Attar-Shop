@@ -1,5 +1,5 @@
 
-import type { Product, Category } from './types';
+import type { Product, Category, ProductPrice } from './types';
 
 export const categories: Category[] = [
   { id: '1', name: 'Classic Attars', slug: 'classic-attars' },
@@ -10,13 +10,29 @@ export const categories: Category[] = [
   { id: '6', name: 'Signature Blends', slug: 'signature-blends' },
 ];
 
+const defaultSizes: ProductPrice[] = [
+  { size: '3ml', price: 0 }, // Base price will be overridden
+  { size: '6ml', price: 0 },
+  { size: '8ml', price: 0 },
+  { size: '12ml', price: 0 },
+];
+
+// Helper to generate example prices based on a base price for 3ml
+const generatePrices = (basePrice: number): ProductPrice[] => [
+  { size: '3ml', price: basePrice },
+  { size: '6ml', price: parseFloat((basePrice * 1.8).toFixed(2)) }, // Example pricing logic
+  { size: '8ml', price: parseFloat((basePrice * 2.3).toFixed(2)) },
+  { size: '12ml', price: parseFloat((basePrice * 3.0).toFixed(2)) },
+];
+
+
 export const products: Product[] = [
   {
     id: 'p1',
     name: 'Ak 47',
     description: 'Experience the captivating aroma of Ak 47.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Ak 47. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 20.00,
+    prices: generatePrices(20.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://images.unsplash.com/photo-1535683577427-740aaac4ec25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJmdW1lfGVufDB8fHx8MTc0OTUzNjYzOXww&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'attar bottles',
@@ -30,7 +46,7 @@ export const products: Product[] = [
     name: 'Al khalij',
     description: 'Experience the captivating aroma of Al khalij.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Al khalij. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 21.00,
+    prices: generatePrices(21.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://images.unsplash.com/photo-1520537867678-1253af0c55ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z2xhc3MlMjBib3R0bGV8ZW58MHx8fHwxNzQ5NTUzNzY3fDA&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'perfume',
@@ -43,7 +59,7 @@ export const products: Product[] = [
     name: 'Ameer al oudh',
     description: 'Experience the captivating aroma of Ameer al oudh.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Ameer al oudh. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 22.00,
+    prices: generatePrices(22.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://images.unsplash.com/photo-1612784641667-365798bba014?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMXx8YXR0YXJ8ZW58MHx8fHwxNzQ5NTUzNjU3fDA&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'perfume bottle',
@@ -56,7 +72,7 @@ export const products: Product[] = [
     name: 'Arabian safari',
     description: 'Experience the captivating aroma of Arabian safari.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Arabian safari. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 23.00,
+    prices: generatePrices(23.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://images.unsplash.com/photo-1646149757906-e6e9e9a7c77f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJmdW1yJTIwYXR0YXJ8ZW58MHx8fHwxNzQ5NTUzNzQyfDA&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'perfume bottle',
@@ -69,7 +85,7 @@ export const products: Product[] = [
     name: 'Arbi',
     description: 'Experience the captivating aroma of Arbi.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Arbi. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 24.00,
+    prices: generatePrices(24.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://images.unsplash.com/photo-1646149757906-e6e9e9a7c77f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJmdW1yJTIwYXR0YXJ8ZW58MHx8fHwxNzQ5NTUzNzQyfDA&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'perfume bottle',
@@ -83,7 +99,7 @@ export const products: Product[] = [
     name: 'Aseel',
     description: 'Experience the captivating aroma of Aseel.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Aseel. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 25.00,
+    prices: generatePrices(25.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -96,7 +112,7 @@ export const products: Product[] = [
     name: 'Bakhoor',
     description: 'Experience the captivating aroma of Bakhoor.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Bakhoor. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 26.00,
+    prices: generatePrices(26.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -109,7 +125,7 @@ export const products: Product[] = [
     name: 'Black musk',
     description: 'Experience the captivating aroma of Black musk.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Black musk. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 27.00,
+    prices: generatePrices(27.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -121,7 +137,7 @@ export const products: Product[] = [
     name: 'Black oudh',
     description: 'Experience the captivating aroma of Black oudh.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Black oudh. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 28.00,
+    prices: generatePrices(28.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -133,7 +149,7 @@ export const products: Product[] = [
     name: 'Black rose',
     description: 'Experience the captivating aroma of Black rose.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Black rose. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 29.00,
+    prices: generatePrices(29.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -145,7 +161,7 @@ export const products: Product[] = [
     name: 'Blue jeans',
     description: 'Experience the captivating aroma of Blue jeans.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Blue jeans. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 30.00,
+    prices: generatePrices(30.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -157,7 +173,7 @@ export const products: Product[] = [
     name: 'Chocolate',
     description: 'Experience the captivating aroma of Chocolate.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Chocolate. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 31.00,
+    prices: generatePrices(31.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -169,7 +185,7 @@ export const products: Product[] = [
     name: 'Cr-7',
     description: 'Experience the captivating aroma of Cr-7.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Cr-7. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 32.00,
+    prices: generatePrices(32.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -181,7 +197,7 @@ export const products: Product[] = [
     name: 'Dana',
     description: 'Experience the captivating aroma of Dana.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Dana. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 33.00,
+    prices: generatePrices(33.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -193,7 +209,7 @@ export const products: Product[] = [
     name: 'Darbar',
     description: 'Experience the captivating aroma of Darbar.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Darbar. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 34.00,
+    prices: generatePrices(34.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -205,7 +221,7 @@ export const products: Product[] = [
     name: 'Dove',
     description: 'Experience the captivating aroma of Dove.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Dove. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 35.00,
+    prices: generatePrices(35.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -217,7 +233,7 @@ export const products: Product[] = [
     name: 'Fantasia',
     description: 'Experience the captivating aroma of Fantasia.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Fantasia. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 36.00,
+    prices: generatePrices(36.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -229,7 +245,7 @@ export const products: Product[] = [
     name: 'Fk',
     description: 'Experience the captivating aroma of Fk.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Fk. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 37.00,
+    prices: generatePrices(37.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -241,7 +257,7 @@ export const products: Product[] = [
     name: 'France 2000',
     description: 'Experience the captivating aroma of France 2000.',
     longDescription: 'Indulge in the distinct and memorable fragrance of France 2000. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 38.00,
+    prices: generatePrices(38.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -253,7 +269,7 @@ export const products: Product[] = [
     name: 'Galib',
     description: 'Experience the captivating aroma of Galib.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Galib. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 39.00,
+    prices: generatePrices(39.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -265,7 +281,7 @@ export const products: Product[] = [
     name: 'Green ajmeri',
     description: 'Experience the captivating aroma of Green ajmeri.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Green ajmeri. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 40.00,
+    prices: generatePrices(40.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -277,7 +293,7 @@ export const products: Product[] = [
     name: 'Green sto',
     description: 'Experience the captivating aroma of Green sto.',
     longDescription: 'Indulge in the distinct and memorable fragrance of Green sto. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
-    price: 41.00,
+    prices: generatePrices(41.00),
     categorySlug: 'signature-blends',
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'perfume bottle',
@@ -295,14 +311,3 @@ export const getFeaturedProducts = (): Product[] => products.filter(p => p.featu
 export const getNewArrivals = (): Product[] => products.filter(p => p.isNewArrival).sort((a,b) => a.name.localeCompare(b.name));
 
 export const getHighlightedNewAttars = (): Product[] => products.filter(p => p.highlightedNewAttar).sort((a,b) => a.name.localeCompare(b.name));
-    
-
-    
-
-
-
-
-
-
-
-
