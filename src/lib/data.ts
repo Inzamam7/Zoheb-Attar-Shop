@@ -33,7 +33,7 @@ export const products: Product[] = [
     price: 21.00,
     categorySlug: 'signature-blends',
     imageUrl: '/images/al-khalij.jpg',
-    imageHint: 'perfume al khalij',
+    imageHint: 'perfume',
     featured: true,
     rating: 4,
     isNewArrival: true,
@@ -298,6 +298,7 @@ export const getHighlightedNewAttars = (): Product[] => products.filter(p => p.h
     
 
     
+
 
 
 
