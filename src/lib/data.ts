@@ -18,8 +18,8 @@ export const products: Product[] = [
     longDescription: 'Indulge in the distinct and memorable fragrance of Ak 47. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
     price: 20.00,
     categorySlug: 'signature-blends',
-    imageUrl: '/images/ak-47-attar.jpg',
-    imageHint: 'attar bottles',
+    imageUrl: 'https://images.unsplash.com/photo-1458538977777-0549b2370168?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJmdW1lJTIwYWs0N3xlbnwwfHx8fDE3NDk1MzY2NTd8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageHint: 'perfume ak47',
     featured: true,
     rating: 5,
   },
@@ -30,8 +30,8 @@ export const products: Product[] = [
     longDescription: 'Indulge in the distinct and memorable fragrance of Al khalij. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
     price: 21.00,
     categorySlug: 'signature-blends',
-    imageUrl: '/images/al-khalij.jpg', // Updated image path
-    imageHint: 'perfume box', // Updated hint
+    imageUrl: '/images/al-khalij.jpg',
+    imageHint: 'perfume box',
     featured: true,
     rating: 4,
   },
