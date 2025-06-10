@@ -32,7 +32,7 @@ export const products: Product[] = [
     longDescription: 'Indulge in the distinct and memorable fragrance of Al khalij. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
     price: 21.00,
     categorySlug: 'signature-blends',
-    imageUrl: '/images/al-khalij.jpg',
+    imageUrl: 'https://images.unsplash.com/photo-1520537867678-1253af0c55ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z2xhc3MlMjBib3R0bGV8ZW58MHx8fHwxNzQ5NTUzNzY3fDA&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'perfume',
     featured: true,
     rating: 4,
@@ -58,7 +58,7 @@ export const products: Product[] = [
     longDescription: 'Indulge in the distinct and memorable fragrance of Arabian safari. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
     price: 23.00,
     categorySlug: 'signature-blends',
-    imageUrl: 'https://images.unsplash.com/photo-1646149757906-e6e9e9a7c77f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxBdHRhcnxlbnwwfHx8fDE3NDk1NTM3MDJ8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1646149757906-e6e9e9a7c77f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJmdW1yJTIwYXR0YXJ8ZW58MHx8fHwxNzQ5NTUzNzQyfDA&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'perfume bottle',
     featured: true,
     rating: 4,
@@ -71,7 +71,7 @@ export const products: Product[] = [
     longDescription: 'Indulge in the distinct and memorable fragrance of Arbi. This attar is carefully crafted to offer a unique olfactory experience, perfect for those who appreciate fine scents and desire a touch of personal elegance.',
     price: 24.00,
     categorySlug: 'signature-blends',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://images.unsplash.com/photo-1646149757906-e6e9e9a7c77f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJmdW1yJTIwYXR0YXJ8ZW58MHx8fHwxNzQ5NTUzNzQyfDA&ixlib=rb-4.1.0&q=80&w=1080',
     imageHint: 'perfume bottle',
     featured: false,
     rating: 5,
@@ -298,6 +298,7 @@ export const getHighlightedNewAttars = (): Product[] => products.filter(p => p.h
     
 
     
+
 
 
 
